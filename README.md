@@ -1,0 +1,2 @@
+# ForumHighlights
+投稿に参加していないと見えづらいDiscordのフォーラムでの活動を外のチャンネルで公開するBot
