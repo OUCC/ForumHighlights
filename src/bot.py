@@ -2,15 +2,18 @@ import os, platform
 import discord
 import asyncio
 import dotenv
+import datetime
+
 
 dotenv.load_dotenv()
 def envId(key):
-     return int(os.getenv(key))
+    return int(os.getenv(key))
 
 intents = discord.Intents.none()
 intents.guild_messages=True
 intents.guilds=True
 intents.members=True
+
 
 # エラー回避
 if platform.system() == 'Windows':
@@ -18,26 +21,30 @@ if platform.system() == 'Windows':
 
 bot = discord.Bot(intents=intents)
 
-async def post(message):
+async def send(message):
     channel = bot.get_channel(envId("BotChannelId"))
     if(channel):
         await channel.send(message)
 
-async def get_hisories():
-    forum_ch = bot.get_channel(envId("ForumChannelId"))
-    histories = forum_ch.name + "のメッセージ一覧\n\n"
-    for thread in forum_ch.threads:
-        histories += thread.name +"\n"
-        async for message in thread.history(oldest_first=True):
-            histories += "  "+message.content+"\n"
-    return histories
+async def send_embed(embed):
+    channel = bot.get_channel(envId("BotChannelId"))
+    if(channel):
+        await channel.send(embed=embed)
+
+async def send_pr_embeds(embeds):
+    channel = bot.get_channel(envId("BotChannelId"))
+    if(channel):
+        await channel.send(embeds=embeds)
+
+def get_forumch_list():
+    chs = []
+    chs.append(bot.get_channel(envId("ForumChannelId")))
+    return chs
 
 
+async def get_messages(thread,after=None):
+    messages=[]
+    async for message in thread.history(after=after,oldest_first=True):
+        messages.append(message)
+    return messages
 
-@bot.event
-async def on_ready():
-    print(await get_hisories())
-    await bot.close()
-
-
-bot.run(os.getenv("BotToken"), reconnect=False)
