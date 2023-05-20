@@ -65,7 +65,7 @@ async def create_pr_embeds():
                         value=embed_value,
                         inline=False
                     )
-                    urls= msg.get_image_urls(message)
+                    urls= msg.image_urls(message)
                     if urls.__len__() > 0:
                         embed.set_image(url=urls[0])
                     embeds.append(embed)

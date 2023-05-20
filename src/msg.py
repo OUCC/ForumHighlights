@@ -3,10 +3,11 @@
 import discord
 import re
 
+weburl_pattern = r"https?://[\w/:%#\$&\?\(\)~\.=\+\-]+"
+
 #文字列のURLを置き換える
 def exclude_url(s:str):
-    pattern = r"https?://[\w/:%#\$&\?\(\)~\.=\+\-]+"
-    return re.sub(pattern,"[URL]",s)
+    return re.sub(weburl_pattern,"[URL]",s)
 
 #文字列のメンションを置き換える
 def exclude_mention(s:str):
@@ -47,9 +48,16 @@ def image_num(messages:list[discord.Message]):
     return num
 
 # メッセージから添付されている画像のURLのリストを取得。URLを送信で画像が表示される
-def get_image_urls(message:discord.Message):
+def image_urls(message:discord.Message):
     urls=[]
     for attachment in message.attachments:
             if attachment.url.endswith(("png", "jpg", "jpeg")):
                 urls.append(attachment.url)
     return urls
+
+#メッセージのリストから添付されているURLの総数を返す
+def weburl_num(messages:list[discord.Message]):
+    num=0
+    for message in messages:
+        num += re.findall(weburl_pattern, message.content).__len__()
+    return num
