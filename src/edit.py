@@ -10,9 +10,9 @@ history_after = datetime.datetime.now() - datetime.timedelta(days=7)
 
 def create_embed():
     embed = discord.Embed(
-        title="✨Forum Highlights✨",
-        color=0x00ff00,
-        description="フォーラム活動の統計情報をお伝えします！\n数字の表記は`ここ1週間/これまで`となっています"
+        title="定期実行テスト",
+        color=0xffffff,
+        description=datetime.datetime.now().__str__()
         #url="https://github.com/OUCC/ForumHighlights"
         )
     return embed
@@ -35,6 +35,8 @@ async def create_statistics():
             embed_value = ""
             all_messages = await bot.get_messages(thread)
             week_messages = await bot.get_messages(thread,history_after)
+            if week_messages.__len__() == 0:
+                continue
             embed_value += "メッセージ数：{}/{}\n".format(week_messages.__len__(),all_messages.__len__())
             embed_value += "文字数：{}/{}\n".format(msg.raw_letter_num(week_messages),msg.raw_letter_num(all_messages))
             embed_value += "有効文字数：{}/{}\n".format(msg.valied_letter_num(week_messages),msg.valied_letter_num(all_messages))
@@ -65,7 +67,7 @@ async def create_pr_embeds():
                         value=embed_value,
                         inline=False
                     )
-                    urls= msg.get_image_urls(message)
+                    urls= msg.image_urls(message)
                     if urls.__len__() > 0:
                         embed.set_image(url=urls[0])
                     embeds.append(embed)
