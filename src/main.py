@@ -17,10 +17,10 @@ async def on_ready():
 async def main():
     # embed = edit.create_embed()
     
-    # embed = await edit.create_statistics()
-    # await bot.send_embed(embed) # 送信
-    pr_embeds = await edit.create_pr_embeds()
-    await bot.send_pr_embeds(pr_embeds)
+    embed = await edit.create_statistics()
+    await bot.send_embed(embed) # 送信
+    # pr_embeds = await edit.create_pr_embeds()
+    # await bot.send_pr_embeds(pr_embeds)
     
     # messages = await bot.get_messages(bot.bot.get_channel(bot.envId("ToukouA_ChannelId")))
     # for message in messages:
