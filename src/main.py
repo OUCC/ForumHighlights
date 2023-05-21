@@ -33,16 +33,11 @@ async def main():
     
     embed = await edit.create_statistics()
     await bot.send_embed(embed) # 送信
-<<<<<<< HEAD
-    # pr_embeds = await edit.create_pr_embeds()
-    # await bot.send_pr_embeds(pr_embeds)
-=======
     
     pr_embeds = await edit.create_pr_embeds()
     if pr_embeds.__len__() > 0:
         await bot.send_pr_embeds(pr_embeds)
     
->>>>>>> mrmocchy
     
     # messages = await bot.get_messages(bot.bot.get_channel(bot.envId("ToukouA_ChannelId")))
     # for message in messages:
