@@ -35,6 +35,7 @@ async def create_statistics():
             embed_value = ""
             all_messages = await bot.get_messages(thread)
             week_messages = await bot.get_messages(thread,history_after)
+            # ここ1週間投稿がなかったスレッドは統計を送らない
             if week_messages.__len__() == 0:
                 continue
             embed_value += "メッセージ数：{}/{}\n".format(week_messages.__len__(),all_messages.__len__())

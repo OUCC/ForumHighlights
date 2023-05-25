@@ -4,9 +4,9 @@ import edit
 import msg
 import discord
 from discord.ext import tasks
-import datetime
+# import datetime
 import asyncio
-
+import server
 
 @bot.bot.event
 async def on_ready():
@@ -15,6 +15,8 @@ async def on_ready():
         looptest.start()
         while True:
             await asyncio.sleep(1)
+      # await main()
+      # print("on ready")
     finally:
         pass
     looptest.stop()
@@ -42,7 +44,13 @@ async def main():
     # messages = await bot.get_messages(bot.bot.get_channel(bot.envId("ToukouA_ChannelId")))
     # for message in messages:
     #     print(msg.valid_str(message.content))
-    
 
+@bot.bot.event
+async def on_message(message):
+  print("got a message")
+
+
+server.keep_alive()
 
 bot.bot.run(os.getenv("BotToken"), reconnect=False)
+
