@@ -27,8 +27,8 @@ async def loop():
 
     now = (datetime.datetime.now()+datetime.timedelta(hours=9)).strftime("%a %H:%M")
     print(now)
-    # 毎週日曜日18:00に投稿
-    if now == "Sun 18:00":
+    # 毎週土曜日18:00に投稿
+    if now == "Sat 18:00":
       await main()
 
 
@@ -59,5 +59,5 @@ async def main():
 server.keep_alive()
 
 # bot起動
-bot.bot.run(os.getenv("BotToken"))
+bot.bot.run(os.getenv("EchanToken"))
 

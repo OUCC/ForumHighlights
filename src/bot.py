@@ -12,7 +12,7 @@ def envId(key):
 intents = discord.Intents.none()
 intents.guild_messages=True
 intents.guilds=True
-intents.members=True
+# intents.members=True
 
 
 # エラー回避
@@ -38,7 +38,9 @@ async def send_pr_embeds(embeds):
 
 def get_forumch_list():
     chs = []
-    chs.append(bot.get_channel(envId("ForumChannelId")))
+    chs.append(bot.get_channel(envId("ProjectForumChannelId")))
+    chs.append(bot.get_channel(envId("ShareForumChannelId")))
+    chs.append(bot.get_channel(envId("OfftopicForumChannelId")))
     return chs
 
 
