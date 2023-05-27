@@ -42,9 +42,9 @@ def get_forumch_list():
     return chs
 
 
-async def get_messages(thread:discord.Thread,before=None,after=None):
+async def get_messages(thread:discord.Thread,after=None):
     messages=[]
-    async for message in thread.history(before=before,after=after,oldest_first=True):
+    async for message in thread.history(after=after,oldest_first=True):
         messages.append(message)
     return messages
 

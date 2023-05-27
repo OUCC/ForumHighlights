@@ -6,16 +6,13 @@ import datetime
 import msg
 import re
 
-history_before = datetime.datetime.today()
-history_before.hour=18
-history_after = history_before - datetime.timedelta(days=7)
 
 def create_embed():
     embed = discord.Embed(
         title="定期実行テスト",
         color=0xffffff,
-        description=datetime.datetime.now().__str__()
-        #url="https://github.com/OUCC/ForumHighlights"
+        description=datetime.datetime.now().__str__(),
+        url="https://github.com/OUCC/ForumHighlights"
         )
     return embed
 
@@ -23,7 +20,8 @@ async def create_statistics():
     embed = discord.Embed(
         title="📊Forum Statistics📊",
         color=0x0000ff,
-        description="フォーラム活動の統計情報をお伝えします！\n数字の表記は`ここ1週間/これまで`となっています"
+        description="フォーラム活動の統計情報をお伝えします！\n数字の表記は`ここ1週間/これまで`となっています",
+        url="https://github.com/OUCC/ForumHighlights"
         )
     
     forumch_list = bot.get_forumch_list()
@@ -32,7 +30,7 @@ async def create_statistics():
         for thread in forumch.threads:
             embed_value = ""
             all_messages = await bot.get_messages(thread)
-            week_messages = await bot.get_messages(thread,before=history_before,after=history_after)
+            week_messages = await bot.get_messages(thread,datetime.datetime.now() - datetime.timedelta(days=7))
             
             # 今週投稿のないスレッドは表示しない
             if week_messages.__len__() == 0:
@@ -71,12 +69,13 @@ async def create_pr_embeds():
     forumch_list = bot.get_forumch_list()
     for forumch in forumch_list:
         for thread in forumch.threads:
-            messages = await bot.get_messages(thread,history_after)
+            messages = await bot.get_messages(thread,datetime.datetime.now() - datetime.timedelta(days=7))
             for message in messages:
                 if message.content.startswith("$pr"):
                     embed = discord.Embed(
                         title="✨Forum PR✨",
                         color=0x00ff00,
+                        url="https://github.com/OUCC/ForumHighlights"
                         )
                     
                     # PR情報の貼り付け
@@ -88,9 +87,17 @@ async def create_pr_embeds():
                         inline=False
                     )
                     
-                    # 一つ添付されていた画像を埋め込む
+                    # 添付されていた画像を埋め込む
+                    # cf: https://www.reddit.com/r/discordapp/comments/raz4kl/finally_a_way_to_display_multiple_images_in_an/
                     urls= msg.image_urls(message)
                     if urls.__len__() > 0:
                         embed.set_image(url=urls[0])
                     embeds.append(embed)
+                    if urls.__len__() > 1:
+                        for i in urls.__len__()-1:
+                            embeds.append(
+                              discord.Embed(
+                                url="https://github.com/OUCC/ForumHighlights"
+                              ).set_image(urls[i+1])
+                            )
     return embeds

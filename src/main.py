@@ -1,41 +1,45 @@
 import os
 import bot
 import edit
-import msg
-import discord
 from discord.ext import tasks
-# import datetime
-import asyncio
+import datetime
 import server
 
 @bot.bot.event
 async def on_ready():
     # print("messages after : "+history_after.__str__())
     try:
-        looptest.start()
-        while True:
-            await asyncio.sleep(1)
-      # await main()
-      # print("on ready")
+        # bot起動時にループスタート
+        loop.start()
+        # while True:
+        #     await asyncio.sleep(1)
     finally:
         pass
-    looptest.stop()
-    await bot.bot.close()
+    # loop.stop()
+    # await bot.bot.close()
 
-@tasks.loop(hours=1)
-async def looptest():
-    embed = edit.create_embed()
-    await bot.send_embed(embed)
-    
-    # await main()
-    
+# 毎分実行
+@tasks.loop(minutes=1)
+async def loop():
+    # 定期実行テスト用
+    # embed = edit.create_embed()
+    # await bot.send_embed(embed)
+
+    now = (datetime.datetime.now()+datetime.timedelta(hours=9)).strftime("%a %H:%M")
+    print(now)
+    # 毎週日曜日18:00に投稿
+    if now == "Sun 18:00":
+      await main()
+
 
 async def main():
     # embed = edit.create_embed()
-    
+
+    # 統計の送信
     embed = await edit.create_statistics()
-    await bot.send_embed(embed) # 送信
-    
+    await bot.send_embed(embed)
+
+    # PRの送信
     pr_embeds = await edit.create_pr_embeds()
     if pr_embeds.__len__() > 0:
         await bot.send_pr_embeds(pr_embeds)
@@ -45,12 +49,15 @@ async def main():
     # for message in messages:
     #     print(msg.valid_str(message.content))
 
-@bot.bot.event
-async def on_message(message):
-  print("got a message")
+# 何かしらのメッセージが送信されたとき
+# @bot.bot.event
+# async def on_message(message):
+#   print("got a message")
 
 
+# Uptime用のFlaskサーバー
 server.keep_alive()
 
-bot.bot.run(os.getenv("BotToken"), reconnect=False)
+# bot起動
+bot.bot.run(os.getenv("BotToken"))
 
